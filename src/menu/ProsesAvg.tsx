@@ -2,6 +2,7 @@ import React, { FocusEvent, useRef, useState } from 'react';
 import { Box, Button, Grid, InputAdornment, TextField, Typography, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 import { propsCOPR } from '../report/copr';
 import COPR from '../report/copr';
+import PetunjukDialog from './Petunjuk';
 
 const blurInputHandler = (
     newValue: number,
@@ -38,6 +39,13 @@ const getElementFromTheMUIInput = (elementRef: React.RefObject<MUIInputBaseRef>,
 };
 
 const ProsesAvg: React.FC<{}> = () => {
+
+    const [petunjuk, setPetunjuk] = useState(false);
+
+    const petunjukHandler = (e: React.MouseEvent) => {
+        setPetunjuk((v: boolean) => !v);
+    };
+ 
     const deptInput = useRef<MUIInputBaseRef>(null);
     const deptOutput = useRef<MUIInputBaseRef>(null);
 
@@ -265,13 +273,14 @@ const ProsesAvg: React.FC<{}> = () => {
 
     return <>
         <Box marginY={10}>
+            <PetunjukDialog open={petunjuk} fnHandle={petunjukHandler}/>
             <Box component='form'>
-                <Typography variant='h3' component='h3'>
-                    Cost of Production Report
-                </Typography>
-                <Typography variant='subtitle1'>
-                    Untuk angka koma silahkan menggunakan titik seperti contoh : 3.14
-                </Typography>
+                <Box display='flex' justifyContent='space-between'>
+                    <Typography variant='h3' component='h3'>
+                        Cost of Production Report
+                    </Typography>
+                    <Button variant='outlined' size='small' onClick={petunjukHandler}>Petunjuk</Button>
+                </Box>
                 <FormGroup>
                     <FormControlLabel control={<Checkbox onChange={secondChangeHandler} />} label='Departmen II'/>
                     <FormControlLabel control={<Checkbox onChange={fifoChangeHandler} />} label='FIFO'/>
@@ -387,7 +396,15 @@ const ProsesAvg: React.FC<{}> = () => {
                 </Grid>
             </Box>
             <Button onClick={reportBtnClickHandler} sx={{marginTop: 2}} variant='contained'color='primary' fullWidth>Calculate</Button>
-            {showReport.displayed && <Box id='copr-report' sx={{marginTop: 7}}>
+            <Box display='block'marginTop={1.5}>
+                <Typography variant='body1' textAlign='center'>
+                    Made with ❤️ By A & Supported By M, C, K and E
+                </Typography>
+                <Typography variant='body1' textAlign='center'>
+                    Find this project on <span><a href='https://github.com/aldofebriii/akbi-automation' target='_blank' rel='noreferrer'>Github</a></span>
+                </Typography>
+            </Box>
+            {showReport.displayed && <Box id='copr-report' sx={{marginTop: 3}}>
                 <COPR isFifo={isFifo} begDept={showReport.data.begDept} endDept={showReport.data.endDept} qSchedule={showReport.data.qSchedule} chargedToDepart={showReport.data.chargedToDepart} isFinalDept={showReport.data.isFinalDept}/>
             </Box>
             }
