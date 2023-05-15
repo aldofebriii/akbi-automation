@@ -11,13 +11,15 @@ const blurInputHandler = (
     nextStateFn: (v: React.SetStateAction<number>) => void
     ) => {
         let parsedValue: number;
+        //Check apakah user telah mengisi
         if(!value) {
             parsedValue = 0;
         } else {
-            parsedValue = parseInt(value);
+            parsedValue = parseFloat(value);
         }
-        setStateFn(parsedValue);
-        if(newValue !== parsedValue) {
+        setStateFn(parsedValue); //Mengset state penyimpinan dari Q
+        //Melakukan penyesuaian apabila sebelumnya sudah ada isian
+        if(newValue !== parsedValue) { 
             const updateBalanced = balanceValue - newValue;
             nextStateFn(updateBalanced);
             nextStateFn((v: number) => {
@@ -29,7 +31,11 @@ const blurInputHandler = (
 
 type MUIInputBaseRef = HTMLDivElement & {
     children: HTMLInputElement[]
-}
+};
+
+const getElementFromTheMUIInput = (elementRef: React.RefObject<MUIInputBaseRef>, children: number) => {
+    return elementRef.current?.children[1].children[children];
+};
 
 const ProsesAvg: React.FC<{}> = () => {
     const deptInput = useRef<MUIInputBaseRef>(null);
@@ -37,6 +43,10 @@ const ProsesAvg: React.FC<{}> = () => {
 
     const [secondDept, setSecondDept] = useState(false);
     const [isFifo, setIsFifo] = useState(false);
+    const [isScrap, setIsScrap] = useState(false);
+    const [isFinalDept, setFinalDept] = useState(false);
+    
+    const scrapPrice = useRef<MUIInputBaseRef>(null);
 
     const [qBal, setQBal] = useState(0);
     const [teBal, setTEBal] = useState(0);
@@ -68,6 +78,11 @@ const ProsesAvg: React.FC<{}> = () => {
         blurInputHandler(endQ, setEndQ, e.target.value, teBal, setTEBal);
     };
 
+    const [scrapQ, setScrapQ] = useState(0);
+    const scrapQBlurHandler = (e: FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        blurInputHandler(scrapQ, setScrapQ, e.target.value, teBal, setTEBal);
+    };
+
 
     const begMaterialP = useRef<MUIInputBaseRef>(null);
     const begLaborP = useRef<MUIInputBaseRef>(null);
@@ -76,6 +91,10 @@ const ProsesAvg: React.FC<{}> = () => {
     const materialP = useRef<MUIInputBaseRef>(null);
     const laborP = useRef<MUIInputBaseRef>(null);
     const overheadP = useRef<MUIInputBaseRef>(null);
+    
+    const scrapMaterialP = useRef<MUIInputBaseRef>(null);
+    const scrapLaborP = useRef<MUIInputBaseRef>(null);
+    const scrapOverheadP = useRef<MUIInputBaseRef>(null);
 
     const prevC = useRef<MUIInputBaseRef>(null);
     const materialC = useRef<MUIInputBaseRef>(null);
@@ -90,15 +109,25 @@ const ProsesAvg: React.FC<{}> = () => {
     const [showReport, setShowReport] = useState<{displayed: boolean, data: propsCOPR}>({
         displayed: false,
         data: {
+            isFinalDept: {
+                bool: isFinalDept,
+                p: 0
+            },
             isFifo: false,
             begDept: '',
             endDept: '',
             qSchedule: {
                 b: {m: 0, l:0, f: 0,q: 0},
                 r: 0,
-                s: 0,
+                a: 0,
                 t: 0,
                 e: {
+                    m: 0,
+                    l: 0,
+                    f: 0,
+                    q: 0
+                },
+                s: {
                     m: 0,
                     l: 0,
                     f: 0,
@@ -122,6 +151,24 @@ const ProsesAvg: React.FC<{}> = () => {
         }
     });
 
+    const finalDeptChangeHandler = (e: React.ChangeEvent) => {
+        if(!isScrap) { 
+            setFinalDept(false);
+            return;
+        };
+        setFinalDept((v: boolean) => !v);
+    };
+
+    const scrapChangeHandler = (e: React.ChangeEvent) => {
+        //Ubah Finish
+        setIsScrap((v: boolean) => !v);
+        if(isScrap) {
+            setFinalDept(false);
+            setTEBal((v: number) => v-= scrapQ);
+            setScrapQ(0);
+        }
+    };
+
     const secondChangeHandler = (e: React.ChangeEvent) => {
         setSecondDept((v: boolean) => !v);
         if(secondDept) {
@@ -137,16 +184,22 @@ const ProsesAvg: React.FC<{}> = () => {
     };
 
     const reportBtnClickHandler = (_: React.MouseEvent<HTMLButtonElement>) => {
-        const begDeptEl = deptInput.current!.children[1].children[0] as HTMLInputElement;
-        const endDeptEl = deptOutput.current!.children[1].children[0] as HTMLInputElement;
+        const begDeptEl = getElementFromTheMUIInput(deptInput, 0) as HTMLInputElement;
+        const endDeptEl = getElementFromTheMUIInput(deptOutput, 0) as HTMLInputElement;
 
-        const begPercentageM = begMaterialP.current?.children[1].children[1] as HTMLInputElement;
-        const begPercentageL = begLaborP.current?.children[1].children[1] as HTMLInputElement;
-        const begPercentageF = begOverheadP.current?.children[1].children[1] as HTMLInputElement;
+        const scrapPriceEl = getElementFromTheMUIInput(scrapPrice, 1) as HTMLInputElement;
+
+        const begPercentageM = getElementFromTheMUIInput(begMaterialP, 1)  as HTMLInputElement;
+        const begPercentageL = getElementFromTheMUIInput(begLaborP, 1) as HTMLInputElement;
+        const begPercentageF = getElementFromTheMUIInput(begOverheadP, 1) as HTMLInputElement;
         
         const percentageM = materialP.current!.children[1].children[1] as HTMLInputElement;
         const percentageL = laborP.current!.children[1].children[1] as HTMLInputElement;
         const percentageF = overheadP.current!.children[1].children[1] as HTMLInputElement;
+
+        const scrapPercentageM = scrapMaterialP.current?.children[1].children[1] as HTMLInputElement;
+        const scrapPercentageL= scrapLaborP.current?.children[1].children[1] as HTMLInputElement;
+        const scrapPercentageF = scrapOverheadP.current?.children[1].children[1] as HTMLInputElement;
 
         const prevCEl = prevC.current?.children[1].children[1] as HTMLInputElement
         const materialCEl = materialC.current!.children[1].children[1] as HTMLInputElement;
@@ -163,38 +216,48 @@ const ProsesAvg: React.FC<{}> = () => {
             return;
         };
         setShowReport({displayed: true, data: {
+            isFinalDept: {
+                bool: isFinalDept,
+                p: isScrap && isFinalDept ? parseFloat(scrapPriceEl.value) : 0
+            },
             isFifo: isFifo,
             begDept: begDeptEl.value,
             endDept: endDeptEl.value,
             qSchedule: {
                 b: {
-                    m: isFifo ? parseInt(begPercentageM.value) : 100,
-                    l: isFifo ? parseInt(begPercentageL.value) : 100,
-                    f: isFifo ? parseInt(begPercentageF.value) : 100,
+                    m: isFifo ? parseFloat(begPercentageM.value) : 100,
+                    l: isFifo ? parseFloat(begPercentageL.value) : 100,
+                    f: isFifo ? parseFloat(begPercentageF.value) : 100,
                     q: begQ
                 },
                 e: {
-                    m: parseInt(percentageM.value),
-                    l: parseInt(percentageL.value),
-                    f: parseInt(percentageF.value),
+                    m: parseFloat(percentageM.value),
+                    l: parseFloat(percentageL.value),
+                    f: parseFloat(percentageF.value),
                     q: endQ
                 },
-                s: periodQ,
+                a: periodQ,
                 t: transferredQ,
-                r: secondDept ? recQ : 0
+                r: secondDept ? recQ : 0,
+                s: {
+                    m: isScrap ? parseFloat(scrapPercentageM.value) : 0,
+                    l: isScrap ? parseFloat(scrapPercentageL.value) : 0,
+                    f: isScrap ? parseFloat(scrapPercentageF.value) : 0,
+                    q: scrapQ
+                }
             },
             chargedToDepart: {
                 b: {
-                    p: secondDept ?  parseInt(prevCEl.value) : 0,
-                    m: parseInt(materialCEl.value),
-                    l: parseInt(laborCEl.value),
-                    f: parseInt(overheadCEl.value)
+                    p: secondDept ?  parseFloat(prevCEl.value) : 0,
+                    m: parseFloat(materialCEl.value),
+                    l: parseFloat(laborCEl.value),
+                    f: parseFloat(overheadCEl.value)
                 },
                 d: {
-                    p: secondDept ? parseInt(prevDurCEl.value) : 0,
-                    m: parseInt(materialDuringEl.value),
-                    l: parseInt(laborDuringCEl.value),
-                    f: parseInt(overheadDuringCEl.value)
+                    p: secondDept ? parseFloat(prevDurCEl.value) : 0,
+                    m: parseFloat(materialDuringEl.value),
+                    l: parseFloat(laborDuringCEl.value),
+                    f: parseFloat(overheadDuringCEl.value)
                 }
             }
         }});
@@ -206,9 +269,17 @@ const ProsesAvg: React.FC<{}> = () => {
                 <Typography variant='h3' component='h3'>
                     Cost of Production Report
                 </Typography>
+                <Typography variant='subtitle1'>
+                    Untuk angka koma silahkan menggunakan titik seperti contoh : 3.14
+                </Typography>
                 <FormGroup>
                     <FormControlLabel control={<Checkbox onChange={secondChangeHandler} />} label='Departmen II'/>
                     <FormControlLabel control={<Checkbox onChange={fifoChangeHandler} />} label='FIFO'/>
+                    <Box display='flex' justifyContent='left'>
+                        <FormControlLabel control={<Checkbox onChange={scrapChangeHandler} />} label='Scrap Goods' disabled={isFinalDept}/>
+                        <FormControlLabel control={<Checkbox onChange={finalDeptChangeHandler} />} label='Final Department' disabled={!isScrap} checked={isFinalDept}/>
+                        {isFinalDept && <TextField type='text' ref={scrapPrice} color='primary' id='price-rusak' label='Harga Jual Rusak' fullWidth InputProps={{startAdornment: <InputAdornment position='start'>Rp</InputAdornment>}}></TextField>}
+                    </Box>
                 </FormGroup>
                 <Grid container spacing={2} sx={{marginTop: 0}}>
                     <Grid item xs={6}>
@@ -234,10 +305,13 @@ const ProsesAvg: React.FC<{}> = () => {
                     <Grid item xs={3}>
                         <TextField id='balance1-q' value={qBal} fullWidth InputProps={{startAdornment: <InputAdornment position='start'>q</InputAdornment>}} disabled label='Balance'></TextField>
                     </Grid>
-                    <Grid item xs={4.5}>
+                    <Grid item xs={isScrap ? 3 : 4.5}>
                         <TextField type='number' onBlur={transferredQBlurHandler} id='transferred-q' label='Transferred' InputProps={{startAdornment: <InputAdornment position='start'>q</InputAdornment>}} fullWidth></TextField>
-                        </Grid>
-                    <Grid item xs={4.5}>
+                    </Grid>
+                    {isScrap && <Grid item xs={3}>
+                        <TextField type='number' onBlur={scrapQBlurHandler} id='scrap-q' label='Scrap' InputProps={{startAdornment: <InputAdornment position='start'>q</InputAdornment>}} fullWidth></TextField>
+                    </Grid>}
+                    <Grid item xs={isScrap ? 3 : 4.5}>
                         <TextField type='number' onBlur={endQBlurHandler} id='end-q' label='Ended' InputProps={{startAdornment: <InputAdornment position='start'>q</InputAdornment>}} fullWidth></TextField>
                     </Grid>
                     <Grid item xs={3}>
@@ -260,14 +334,25 @@ const ProsesAvg: React.FC<{}> = () => {
                         </Grid>
                     </>}
                     <Grid item xs={4}>
-                        <TextField ref={materialP} type='number' id='material-p' label='Finisihed Material' InputProps={{startAdornment: <InputAdornment position='start'>%</InputAdornment>}} fullWidth></TextField>
+                        <TextField ref={materialP} type='number' id='material-p' label='Finished Material' InputProps={{startAdornment: <InputAdornment position='start'>%</InputAdornment>}} fullWidth></TextField>
                         </Grid>
                     <Grid item xs={4}>
-                        <TextField ref={laborP} type='number' id='labor-p' label='Finisihed Labor' InputProps={{startAdornment: <InputAdornment position='start'>%</InputAdornment>}} fullWidth></TextField>
+                        <TextField ref={laborP} type='number' id='labor-p' label='Finished Labor' InputProps={{startAdornment: <InputAdornment position='start'>%</InputAdornment>}} fullWidth></TextField>
                     </Grid>
                     <Grid item xs={4}>
                         <TextField ref={overheadP} type='number' id='overhead-p' label='Finished Overhead' InputProps={{startAdornment: <InputAdornment position='start'>%</InputAdornment>}} fullWidth></TextField>
                     </Grid>
+                    {isScrap && <>
+                        <Grid item xs={4}>
+                            <TextField ref={scrapMaterialP} type='number' id='s-material-p' label='Scrap Material' InputProps={{startAdornment: <InputAdornment position='start'>%</InputAdornment>}} fullWidth></TextField>
+                            </Grid>
+                        <Grid item xs={4}>
+                            <TextField ref={scrapLaborP} type='number' id='s-labor-p' label='Scrap Labor' InputProps={{startAdornment: <InputAdornment position='start'>%</InputAdornment>}} fullWidth></TextField>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField ref={scrapOverheadP} type='number' id='s-overhead-p' label='Scrap Overhead' InputProps={{startAdornment: <InputAdornment position='start'>%</InputAdornment>}} fullWidth></TextField>
+                        </Grid>
+                    </>}
                     <Grid item xs={12}>
                         <Typography variant='h4' component='h4'>
                             Cost Charged To Deparment
@@ -278,7 +363,7 @@ const ProsesAvg: React.FC<{}> = () => {
                             <TextField type='number' color='primary' ref={prevC} id='b-prev-c' label='Beginning Previous Cost' InputProps={{startAdornment: <InputAdornment position='start'>Rp</InputAdornment>}} fullWidth ></TextField>
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField type='number' color='primary' ref={prevDurC} id='d-prev-c' label='Previou During Cost' InputProps={{startAdornment: <InputAdornment position='start'>Rp</InputAdornment>}} fullWidth ></TextField>
+                            <TextField type='number' color='primary' ref={prevDurC} id='d-prev-c' label='Previous Transferred Cost' InputProps={{startAdornment: <InputAdornment position='start'>Rp</InputAdornment>}} fullWidth ></TextField>
                         </Grid>
                     </>}
                     <Grid item xs={4}>
@@ -303,7 +388,7 @@ const ProsesAvg: React.FC<{}> = () => {
             </Box>
             <Button onClick={reportBtnClickHandler} sx={{marginTop: 2}} variant='contained'color='primary' fullWidth>Calculate</Button>
             {showReport.displayed && <Box id='copr-report' sx={{marginTop: 7}}>
-                <COPR isFifo={isFifo} begDept={showReport.data.begDept} endDept={showReport.data.endDept} qSchedule={showReport.data.qSchedule} chargedToDepart={showReport.data.chargedToDepart}/>
+                <COPR isFifo={isFifo} begDept={showReport.data.begDept} endDept={showReport.data.endDept} qSchedule={showReport.data.qSchedule} chargedToDepart={showReport.data.chargedToDepart} isFinalDept={showReport.data.isFinalDept}/>
             </Box>
             }
         </Box>
