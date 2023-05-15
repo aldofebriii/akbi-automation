@@ -53,7 +53,7 @@ const calcEquiv = (qs: propsCOPR['qSchedule'], jenis: jenis | 'p', isFifo: boole
     //Rumus Dasar
     let equiv = transferred + endPercentage * endQuantity;
     //Jika Dia previous cost maka equiv setara dengan unit receieved
-    if(jenis === 'p') {
+    if(jenis === 'p' && isFifo) {
         equiv = qs.r + (spoiled ? spoilPercentge * spoilQuantity : 0 ) ;
         return equiv;   
     };
@@ -85,7 +85,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
     const spoiled = Boolean(props.qSchedule.s.q);
 
     const totalQ1 = props.qSchedule.b.q + props.qSchedule.a + props.qSchedule.r;
-    const totalQ2 = props.qSchedule.t + props.qSchedule.e.q;
+    const totalQ2 = props.qSchedule.t + props.qSchedule.e.q + props.qSchedule.s.q;
 
     const totalBegCost = calcTotalCost('b', props.chargedToDepart);
     const totalDurCost = calcTotalCost('d', props.chargedToDepart);
@@ -114,7 +114,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
     };
     const totalCostFromBeginning = begCostM + begCostL + begCostF + totalBegCost;
     //Dimulai dan diselesaikan
-    const qStartedAndFinished = props.qSchedule.a + props.qSchedule.t - props.qSchedule.b.q;
+    const qStartedAndFinished = props.qSchedule.t - props.qSchedule.b.q;
     const costStartedAndFinished = qStartedAndFinished * totalUnitcost;
 
     //Spoiled
