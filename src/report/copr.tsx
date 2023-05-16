@@ -54,7 +54,7 @@ const calcEquiv = (qs: propsCOPR['qSchedule'], jenis: jenis | 'p', isFifo: boole
     let equiv = transferred + endPercentage * endQuantity;
     //Jika Dia previous cost maka equiv setara dengan unit receieved
     if(jenis === 'p' && isFifo) {
-        equiv = qs.r + (spoiled ? spoilPercentge * spoilQuantity : 0 ) ;
+        equiv = qs.r + (spoiled ? spoilPercentge * spoilQuantity : 0 ) - qs.b.q;
         return equiv;   
     };
     //Penambahan rumus jika FIFO
