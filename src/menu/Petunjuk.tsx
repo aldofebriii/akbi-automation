@@ -36,7 +36,7 @@ const PetunjukDialog: React.FC<PetunjukDialogProps> = ({open, fnHandle}) => {
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             <ol>
-                <li>Jangan lupa untuk pengunaan koma silahkan untuk menggunakan list!</li>
+                <li>Jangan lupa untuk pengunaan koma silahkan untuk menggunakan titik!</li>
                 <li>Bagian kosong silahkan di-isi dengan nol.</li>
                 <li>FIFO : Menggunakan aturan FIFO (Wajib ada % dari Beginning Material).</li>
                 <li>Department II : (Menerima Quantity dari Department Sebelumnya) untuk Previous Transferred Cost di-isi Transferred Cost dari Department sebelumnya.</li>

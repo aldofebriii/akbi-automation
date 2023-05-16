@@ -247,19 +247,19 @@ const COPR: React.FC<propsCOPR> = (props) => {
                 <Grid item xs={5}>Material</Grid>
                 <Grid item xs={2}>{props.chargedToDepart.d.m}</Grid>
                 <Grid item xs={2}>{durEquivM}</Grid>
-                <Grid item xs={2}>{unitcostM}</Grid>
+                <Grid item xs={2}>{unitcostM.toFixed(2)}</Grid>
 
                 <Grid item xs={1}></Grid>
                 <Grid item xs={5}>Labor</Grid>
                 <Grid item xs={2}>{props.chargedToDepart.d.l}</Grid>
                 <Grid item xs={2}>{durEquivL}</Grid>
-                <Grid item xs={2}>{unitcostL}</Grid>
+                <Grid item xs={2}>{unitcostL.toFixed(2)}</Grid>
 
                 <Grid item xs={1}></Grid>
                 <Grid item xs={5}>Overhead</Grid>
                 <Grid item xs={2}>{props.chargedToDepart.d.f}</Grid>
                 <Grid item xs={2}>{durEquivF}</Grid>
-                <Grid item xs={2}>{unitcostF}</Grid>
+                <Grid item xs={2}>{unitcostF.toFixed(2)}</Grid>
 
                 <Grid item xs={6}>Total Cost Added During The Current Period </Grid>
                 <Grid item xs={2} sx={{borderTop: 2}}>{totalDurCost}</Grid>
@@ -307,7 +307,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={1}>{props.qSchedule.b.q}</Grid>
                     <Grid item xs={1}>{100 - props.qSchedule.b.m}</Grid>
                     <Grid item xs={1}>{props.qSchedule.b.q * (100 - props.qSchedule.b.m)/100}</Grid>
-                    <Grid item xs={1}>{unitcostM}</Grid>
+                    <Grid item xs={1}>{unitcostM.toFixed(2)}</Grid>
                     <Grid item xs={1}>{begCostM}</Grid>
                     <Grid item xs={1}></Grid>
 
@@ -317,7 +317,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={1}>{props.qSchedule.b.q}</Grid>
                     <Grid item xs={1}>{100 - props.qSchedule.b.l}</Grid>
                     <Grid item xs={1}>{props.qSchedule.b.q * (100 - props.qSchedule.b.m)/100}</Grid>
-                    <Grid item xs={1}>{unitcostL}</Grid>
+                    <Grid item xs={1}>{unitcostL.toFixed(2)}</Grid>
                     <Grid item xs={1}>{begCostL}</Grid>
                     <Grid item xs={1}></Grid>
 
@@ -328,7 +328,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={1}>{100 - props.qSchedule.b.f}</Grid>
                     <Grid item xs={1}>{props.qSchedule.b.q * (100 - props.qSchedule.b.m)/100}</Grid>
                     <Grid item xs={1}>{unitcostF}</Grid>
-                    <Grid item xs={1}>{begCostF}</Grid>
+                    <Grid item xs={1}>{begCostF.toFixed(2)}</Grid>
                     <Grid item xs={1} sx={{borderBottom: 2}}>{totalCostFromBeginning}</Grid>
 
                     <Grid item xs={1}></Grid>
