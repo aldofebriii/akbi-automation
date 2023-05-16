@@ -118,7 +118,7 @@ const ProsesAvg: React.FC<{}> = () => {
         displayed: false,
         data: {
             isFinalDept: {
-                bool: isFinalDept,
+                bool: false,
                 p: 0
             },
             isFifo: false,

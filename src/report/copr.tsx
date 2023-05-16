@@ -345,7 +345,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={1}>{totalCostFromBeginning + costStartedAndFinished}</Grid>
                 </>}
 
-                {spoiled && !props.isFinalDept && <>
+                {spoiled && !props.isFinalDept.bool && <>
                     <Grid item xs={6}>Spoiled Units</Grid>
                     <Grid item xs={6}></Grid>
 
@@ -379,7 +379,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={1} borderTop={2}>{totalSpoiledCost}</Grid>
                 </>
                 }
-                {spoiled && props.isFinalDept && <>
+                {spoiled && props.isFinalDept.bool && <>
                     <Grid item xs={6}>Move To Scrap Warehouse</Grid>
                     <Grid item xs={1}>{props.qSchedule.s.q}</Grid>
                     <Grid item xs={1}>100</Grid>
