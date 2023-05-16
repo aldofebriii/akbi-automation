@@ -427,8 +427,8 @@ const COPR: React.FC<propsCOPR> = (props) => {
                 <Grid item xs={1}>{props.qSchedule.e.q}</Grid>
                 <Grid item xs={1}>{props.qSchedule.e.m}</Grid>
                 <Grid item xs={1}>{props.qSchedule.e.q * props.qSchedule.e.m/100}</Grid>
-                <Grid item xs={1}>{unitcostM}</Grid>
-                <Grid item xs={1}>{wipM}</Grid>
+                <Grid item xs={1}>{unitcostM.toFixed(2)}</Grid>
+                <Grid item xs={1}>{wipM.toFixed(2)}</Grid>
                 <Grid item xs={1}></Grid>
 
                 <Grid item xs={1}></Grid>
@@ -436,8 +436,8 @@ const COPR: React.FC<propsCOPR> = (props) => {
                 <Grid item xs={1}>{props.qSchedule.e.q}</Grid>
                 <Grid item xs={1}>{props.qSchedule.e.l}</Grid>
                 <Grid item xs={1}>{props.qSchedule.e.q * props.qSchedule.e.l/100}</Grid>
-                <Grid item xs={1}>{unitcostL}</Grid>
-                <Grid item xs={1}>{wipL}</Grid>
+                <Grid item xs={1}>{unitcostL.toFixed(2)}</Grid>
+                <Grid item xs={1}>{wipL.toFixed(2)}</Grid>
                 <Grid item xs={1}></Grid>
 
                 <Grid item xs={1}></Grid>
@@ -445,8 +445,8 @@ const COPR: React.FC<propsCOPR> = (props) => {
                 <Grid item xs={1}>{props.qSchedule.e.q}</Grid>
                 <Grid item xs={1}>{props.qSchedule.e.f}</Grid>
                 <Grid item xs={1}>{props.qSchedule.e.q * props.qSchedule.e.f/100}</Grid>
-                <Grid item xs={1}>{unitcostF}</Grid>
-                <Grid item xs={1}>{wipF}</Grid>
+                <Grid item xs={1}>{unitcostF.toFixed(2)}</Grid>
+                <Grid item xs={1}>{wipF.toFixed(2)}</Grid>
                 <Grid item xs={1} sx={{borderBottom: 2}}>{Math.round(totalCostWIPEnd)}</Grid>
 
                 <Grid item xs={6}>Total Cost Accounted For</Grid>
