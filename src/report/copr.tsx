@@ -312,7 +312,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={4}>Labor</Grid>
                     <Grid item xs={1}>{props.qSchedule.b.q}</Grid>
                     <Grid item xs={1}>{100 - props.qSchedule.b.l}</Grid>
-                    <Grid item xs={1}>{props.qSchedule.b.q * (100 - props.qSchedule.b.m)/100}</Grid>
+                    <Grid item xs={1}>{props.qSchedule.b.q * (100 - props.qSchedule.b.l)/100}</Grid>
                     <Grid item xs={1}>{unitcostL.toFixed(2)}</Grid>
                     <Grid item xs={1}>{begCostL.toFixed(2)}</Grid>
                     <Grid item xs={1}></Grid>
@@ -322,7 +322,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={4}>Overhead</Grid>
                     <Grid item xs={1}>{props.qSchedule.b.q}</Grid>
                     <Grid item xs={1}>{100 - props.qSchedule.b.f}</Grid>
-                    <Grid item xs={1}>{props.qSchedule.b.q * (100 - props.qSchedule.b.m)/100}</Grid>
+                    <Grid item xs={1}>{props.qSchedule.b.q * (100 - props.qSchedule.b.f)/100}</Grid>
                     <Grid item xs={1}>{unitcostF.toFixed(2)}</Grid>
                     <Grid item xs={1}>{begCostF.toFixed(2)}</Grid>
                     <Grid item xs={1} sx={{borderBottom: 2}}>{totalCostFromBeginning}</Grid>
