@@ -398,7 +398,7 @@ const ProsesAvg: React.FC<{}> = () => {
             <Button onClick={reportBtnClickHandler} sx={{marginTop: 2}} variant='contained'color='primary' fullWidth>Calculate</Button>
             <Box display='block'marginTop={1.5}>
                 <Typography variant='body1' textAlign='center'>
-                    Made with ❤️ By A & Supported By M, C, K and E
+                    Made with ❤️ By A & Supported By M, C, K, E and I
                 </Typography>
                 <Typography variant='body1' textAlign='center'>
                     Find this project on <span><a href='https://github.com/aldofebriii/akbi-automation' target='_blank' rel='noreferrer'>Github</a></span>

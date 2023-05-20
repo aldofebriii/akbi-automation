@@ -52,11 +52,6 @@ const calcEquiv = (qs: propsCOPR['qSchedule'], jenis: jenis | 'p', isFifo: boole
 
     //Rumus Dasar
     let equiv = transferred + endPercentage * endQuantity;
-    // //Jika Dia previous cost maka equiv setara dengan unit receieved
-    // if(jenis === 'p' && isFifo) {
-    //     equiv = qs.r + (spoiled ? spoilPercentge * spoilQuantity : 0 ) - qs.b.q;
-    //     return equiv;   
-    // };
     //Penambahan rumus jika FIFO
     if(isFifo) { 
         equiv -= (begPercentage * begQuantity);
@@ -118,10 +113,11 @@ const COPR: React.FC<propsCOPR> = (props) => {
     const costStartedAndFinished = qStartedAndFinished * totalUnitcost;
 
     //Spoiled
+    const spoiledCostP = secondDept ? props.qSchedule.s.q * unitcostP : 0;
     const spoiledCostM = calcTransferedAndEndingCost(unitcostM, props.qSchedule, 'm', 's');
     const spoiledCostL = calcTransferedAndEndingCost(unitcostL, props.qSchedule, 'l', 's');
     const spoiledCostF = calcTransferedAndEndingCost(unitcostF, props.qSchedule, 'f', 's');
-    const totalSpoiledCost = spoiledCostM + spoiledCostL + spoiledCostF;
+    const totalSpoiledCost = spoiledCostM + spoiledCostL + spoiledCostF + spoiledCostP;
     
     //Spoiled Final Dept
     const spoiledWarehouseCost = props.qSchedule.s.q * props.isFinalDept.p;;
@@ -348,6 +344,17 @@ const COPR: React.FC<propsCOPR> = (props) => {
                 {spoiled && !props.isFinalDept.bool && <>
                     <Grid item xs={6}>Spoiled Units</Grid>
                     <Grid item xs={6}></Grid>
+
+                    {secondDept && <>
+                        <Grid item xs={1}></Grid>
+                        <Grid item xs={5}>From Prev Dept.</Grid>
+                        <Grid item xs={1}>{props.qSchedule.s.q}</Grid>
+                        <Grid item xs={1}>{100}</Grid>
+                        <Grid item xs={1}>{props.qSchedule.s.q}</Grid>
+                        <Grid item xs={1}>{unitcostP.toFixed(2)}</Grid>
+                        <Grid item xs={1}>{spoiledCostP.toFixed(2)}</Grid>
+                        <Grid item xs={1}></Grid>
+                    </>}
 
                     <Grid item xs={1}></Grid>
                     <Grid item xs={5}>Material</Grid>
