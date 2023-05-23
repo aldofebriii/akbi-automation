@@ -187,7 +187,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={2}>{props.qSchedule.s.q}</Grid> 
                 </>}
 
-                {props.isLost && <>
+                {props.isLost.bool && <>
                     <Grid item xs={4}>Lost Units</Grid>
                     <Grid item xs={6}></Grid>
                     <Grid item xs={2}>{props.isLost.q}</Grid> 
