@@ -53,6 +53,7 @@ const ProsesAvg: React.FC<{}> = () => {
     const [isFifo, setIsFifo] = useState(false);
     const [isScrap, setIsScrap] = useState(false);
     const [isFinalDept, setFinalDept] = useState(false);
+    const [isLost, setIsLost] = useState(false);
     
     const scrapPrice = useRef<MUIInputBaseRef>(null);
 
@@ -91,6 +92,10 @@ const ProsesAvg: React.FC<{}> = () => {
         blurInputHandler(scrapQ, setScrapQ, e.target.value, teBal, setTEBal);
     };
 
+    const [lostQ, setLostQ] = useState(0);
+    const lostQBlurHandler = (e: FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        blurInputHandler(lostQ, setLostQ, e.target.value, teBal, setTEBal);
+    };
 
     const begMaterialP = useRef<MUIInputBaseRef>(null);
     const begLaborP = useRef<MUIInputBaseRef>(null);
@@ -117,6 +122,10 @@ const ProsesAvg: React.FC<{}> = () => {
     const [showReport, setShowReport] = useState<{displayed: boolean, data: propsCOPR}>({
         displayed: false,
         data: {
+            isLost: {
+                bool: false,
+                q: 0
+            },
             isFinalDept: {
                 bool: false,
                 p: 0
@@ -158,6 +167,14 @@ const ProsesAvg: React.FC<{}> = () => {
             }
         }
     });
+
+    const lostChangeHandler = (e: React.ChangeEvent) => {
+        setIsLost((v: boolean) => !v);
+        if(lostQ) {
+            setTEBal((v:number) => v-= lostQ);
+            setLostQ(0);
+        }
+    };
 
     const finalDeptChangeHandler = (e: React.ChangeEvent) => {
         if(!isScrap) { 
@@ -224,6 +241,10 @@ const ProsesAvg: React.FC<{}> = () => {
             return;
         };
         setShowReport({displayed: true, data: {
+            isLost: {
+                bool: isLost,
+                q: lostQ
+            },
             isFinalDept: {
                 bool: isFinalDept,
                 p: isScrap && isFinalDept ? parseFloat(scrapPriceEl.value) : 0
@@ -288,6 +309,10 @@ const ProsesAvg: React.FC<{}> = () => {
                         <FormControlLabel control={<Checkbox onChange={scrapChangeHandler} />} label='Scrap Goods' disabled={isFinalDept}/>
                         <FormControlLabel control={<Checkbox onChange={finalDeptChangeHandler} />} label='Final Department' disabled={!isScrap} checked={isFinalDept}/>
                         {isFinalDept && <TextField type='text' ref={scrapPrice} color='primary' id='price-rusak' label='Harga Jual Rusak' fullWidth InputProps={{startAdornment: <InputAdornment position='start'>Rp</InputAdornment>}}></TextField>}
+                    </Box>
+                    <Box display='flex' justifyContent='left'>
+                        <FormControlLabel control={<Checkbox onChange={lostChangeHandler} />} label='Lost Goods'/>
+                        {isLost && <TextField type='text' onBlur={lostQBlurHandler} color='primary' id='price-rusak' label='Banyaknya Lost Goods' fullWidth InputProps={{startAdornment: <InputAdornment position='start'>q</InputAdornment>}}></TextField>}
                     </Box>
                 </FormGroup>
                 <Grid container spacing={2} sx={{marginTop: 0}}>
@@ -405,7 +430,7 @@ const ProsesAvg: React.FC<{}> = () => {
                 </Typography>
             </Box>
             {showReport.displayed && <Box id='copr-report' sx={{marginTop: 3}}>
-                <COPR isFifo={isFifo} begDept={showReport.data.begDept} endDept={showReport.data.endDept} qSchedule={showReport.data.qSchedule} chargedToDepart={showReport.data.chargedToDepart} isFinalDept={showReport.data.isFinalDept}/>
+                <COPR isFifo={isFifo} begDept={showReport.data.begDept} endDept={showReport.data.endDept} qSchedule={showReport.data.qSchedule} chargedToDepart={showReport.data.chargedToDepart} isFinalDept={showReport.data.isFinalDept} isLost={showReport.data.isLost}/>
             </Box>
             }
         </Box>

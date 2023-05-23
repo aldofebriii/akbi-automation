@@ -10,6 +10,10 @@ interface MLF {
 type chargedToDepartDetail = {p : number} & MLF;
 
 export interface propsCOPR {
+    isLost: {
+        bool: boolean,
+        q: number
+    };
     isFinalDept: {
         bool: boolean,
         p: number
@@ -80,7 +84,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
     const spoiled = Boolean(props.qSchedule.s.q);
 
     const totalQ1 = props.qSchedule.b.q + props.qSchedule.a + props.qSchedule.r;
-    const totalQ2 = props.qSchedule.t + props.qSchedule.e.q + props.qSchedule.s.q;
+    const totalQ2 = props.qSchedule.t + props.qSchedule.e.q + props.qSchedule.s.q + props.isLost.q;
 
     const totalBegCost = calcTotalCost('b', props.chargedToDepart);
     const totalDurCost = calcTotalCost('d', props.chargedToDepart);
@@ -181,6 +185,12 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={2}>{props.qSchedule.s.l}</Grid> 
                     <Grid item xs={2}>{props.qSchedule.s.f}</Grid>
                     <Grid item xs={2}>{props.qSchedule.s.q}</Grid> 
+                </>}
+
+                {props.isLost && <>
+                    <Grid item xs={4}>Lost Units</Grid>
+                    <Grid item xs={6}></Grid>
+                    <Grid item xs={2}>{props.isLost.q}</Grid> 
                 </>}
 
                 <Grid item xs={4}>Ending Inventory</Grid>
