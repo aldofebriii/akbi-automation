@@ -420,7 +420,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={5}>Less: Sold Value</Grid>
                     <Grid item xs={1}>{props.qSchedule.s.q}</Grid>
                     <Grid item xs={2}></Grid>
-                    <Grid item xs={1}>{totalUnitcost}</Grid>
+                    <Grid item xs={1}>{props.isFinalDept.p}</Grid>
                     <Grid item xs={1}></Grid>
                     <Grid item xs={1}>{(totalUnitcost - props.isFinalDept.p) * props.qSchedule.s.q}</Grid>
                 </>}
