@@ -245,7 +245,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={5}>Cost From Prev Dept.</Grid>
                     <Grid item xs={2}>{props.chargedToDepart.d.p}</Grid>
                     <Grid item xs={2}>{durEquivP}</Grid>
-                    <Grid item xs={2}>{unitcostP}</Grid>
+                    <Grid item xs={2}>{unitcostP.toFixed(2)}</Grid>
                 </>
                 }
 
@@ -342,9 +342,9 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={1}>{qStartedAndFinished}</Grid>
                     <Grid item xs={1}>{100}</Grid>
                     <Grid item xs={1}>{qStartedAndFinished}</Grid>
-                    <Grid item xs={1}>{totalUnitcost}</Grid>
+                    <Grid item xs={1}>{totalUnitcost.toFixed(2)}</Grid>
                     <Grid item xs={1}></Grid>
-                    <Grid item xs={1} sx={{borderBottom: 2}}>{costStartedAndFinished}</Grid>
+                    <Grid item xs={1} sx={{borderBottom: 2}}>{costStartedAndFinished.toFixed(2)}</Grid>
 
                     <Grid item xs={6}>Total cost transferred to </Grid>
                     <Grid item xs={5}></Grid>
@@ -403,7 +403,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={1}>{props.qSchedule.s.q}</Grid>
                     <Grid item xs={1}>{props.isFinalDept.p}</Grid>
                     <Grid item xs={1}></Grid>
-                    <Grid item xs={1}>{props.isFinalDept.p * props.qSchedule.s.q}</Grid>
+                    <Grid item xs={1}>{(props.isFinalDept.p * props.qSchedule.s.q).toFixed(2)}</Grid>
 
                     <Grid item xs={6}>Scrap Goods Into FOH</Grid>
                     <Grid item xs={6}></Grid>
@@ -413,7 +413,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={1}>{props.qSchedule.s.q}</Grid>
                     <Grid item xs={1}>100</Grid>
                     <Grid item xs={1}>{props.qSchedule.s.q}</Grid>
-                    <Grid item xs={1}>{totalUnitcost}</Grid>
+                    <Grid item xs={1}>{totalUnitcost.toFixed(2)}</Grid>
                     <Grid item xs={2}></Grid>
 
                     <Grid item xs={1}></Grid>
@@ -422,7 +422,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={2}></Grid>
                     <Grid item xs={1}>{props.isFinalDept.p}</Grid>
                     <Grid item xs={1}></Grid>
-                    <Grid item xs={1}>{(totalUnitcost - props.isFinalDept.p) * props.qSchedule.s.q}</Grid>
+                    <Grid item xs={1}>{((totalUnitcost - props.isFinalDept.p) * props.qSchedule.s.q).toFixed(2)}</Grid>
                 </>}
 
                 <Grid item xs={6}>Work In Process, Ending Inventory:</Grid>
@@ -434,7 +434,7 @@ const COPR: React.FC<propsCOPR> = (props) => {
                     <Grid item xs={1}>{props.qSchedule.e.q}</Grid>
                     <Grid item xs={1}>100</Grid>
                     <Grid item xs={1}>{props.qSchedule.e.q}</Grid>
-                    <Grid item xs={1}>{unitcostP}</Grid>
+                    <Grid item xs={1}>{unitcostP.toFixed(2)}</Grid>
                     <Grid item xs={1}>{Math.round(unitcostP * props.qSchedule.e.q)}</Grid>
                     <Grid item xs={1}></Grid>
                 </>}
