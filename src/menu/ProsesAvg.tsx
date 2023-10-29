@@ -302,6 +302,18 @@ const ProsesAvg: React.FC<{}> = () => {
                     </Typography>
                     <Button variant='outlined' size='small' onClick={petunjukHandler}>Petunjuk</Button>
                 </Box>
+                <Box display='flex' sx={{alignItems: 'center', justifyContent: 'space-around'}}>
+                    <Button variant='contained'>
+                        <a href="https://drive.google.com/uc?export=view&id=1BFGsy-5UKgGHXDXH13ET4ZMZRXr40-FF" target='_blank' rel='noreferrer' referrerPolicy='no-referrer' style={{textDecoration: 'none', color: 'white'}}>
+                            Tutorial
+                        </a>
+                    </Button>
+                    <Button variant='contained'>
+                        <a href="https://drive.google.com/uc?export=view&id=1mLE2uDb_LflHH_FusF7gfY44F6RyEUbC" target='_blank' rel='noreferrer' referrerPolicy='no-referrer' style={{textDecoration: 'none', color: 'white'}}>
+                            Contoh Soal
+                        </a>
+                    </Button>
+                </Box>
                 <FormGroup>
                     <FormControlLabel control={<Checkbox onChange={secondChangeHandler} />} label='Departmen II'/>
                     <FormControlLabel control={<Checkbox onChange={fifoChangeHandler} />} label='FIFO'/>
@@ -423,7 +435,9 @@ const ProsesAvg: React.FC<{}> = () => {
             <Button onClick={reportBtnClickHandler} sx={{marginTop: 2}} variant='contained'color='primary' fullWidth>Calculate</Button>
             <Box display='block'marginTop={1.5}>
                 <Typography variant='body1' textAlign='center'>
-                    Made with ❤️ By A & Supported By M, C, K, E and I
+                    Made with ❤️ By Aldo & Supported By Marsel, Caca, Kevin, Erika, dan Ian
+                    <br />
+                    Tutorial with ❤️ By Nisa dan Bara
                 </Typography>
                 <Typography variant='body1' textAlign='center'>
                     Find this project on <span><a href='https://github.com/aldofebriii/akbi-automation' target='_blank' rel='noreferrer'>Github</a></span>

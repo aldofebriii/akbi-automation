@@ -9,4 +9,5 @@
   <footer>Made with ❤️ By Aldo</footer>
   
   <p>Also thank you for the support : Marsel Juliandes, Khansa Salsabila, Erika, Parjo Ian, Kevin Robert</p>
+  <p>Also thank you for the support : Muhinda Y. Arinda Barana D. dan F. Choirin Nisa</p>
   
